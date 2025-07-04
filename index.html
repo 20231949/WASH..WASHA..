@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>WASHA..WASHA..</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url(my.jpg);
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 20px;
+            color: #222;
+        }
+        .page {
+            display: none;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #f0f0f0;
+            animation: fadeIn 0.5s ease-in-out;
+            margin: 30px auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            background-image: url(you.jpg);
+            background-color: transparent;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            animation: change-image 4s infinite;
+        }
+           @keyframes change-image{
+            0%{background-image: url('to.jpg');}
+            2%{background-image:url('tt.jpg')}
+            40%{background-image:url('6.jpg')}
+            60%{background-image:url('5.jpg')}
+            80%{background-image:url('4.jpg')}
+            100%{background-image:url('3.jpg')}
+        }
+
+        #dashboard {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        button {
+            background-image: url(kim.jpg);
+            width: 22%;
+            background-color: darkcyan;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #007777;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: darkcyan;
+            cursor: pointer;
+        }
+        input[type="text"], input[type="number"], input[type="time"], input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        input[type="checkbox"] {
+            display:inline-block;
+            margin-left: 1px;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 17px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            resize: vertical;
+            background-color:#fff;
+        }
+        .btn-group {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .btn-group button {
+            margin: 0 8px;
+            width: auto;
+            padding: 10px 20px;
+        }
+        .price-display {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e6ffe6;
+            border: 1px solid #00cc00;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            color: #008000;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1 style="color:navajowhite;">WELCOME TO WASHA..WASHA</h1>
+    <h3><p style="color:navajowhite;">wash with us and experience a beautiful look all day. only with wash..wash!!!</p><h3>
+    <div id="dashboard">
+        <button onclick="showPage('about-us')">About Us</button>
+        <button onclick="showPage('request-washing')">Request For Washing</button>
+        <button onclick="showPage('request-ironing')">Request For Ironing</button>
+        <button onclick="showPage('chat-with-us')">Chat with us</button>
+    </div>
+</header>
+
+<div id="about-us" class="page">
+    <h2>About Us</h2>
+    <p>We are a team of professionals dedicated to providing the best laundry services.</p>
+    <p>Our mission is to make your life easier by providing clean and fresh clothes.</p>
+    <br><p>for more contact us on:<p></p>
+    <p style="color:red;">+260972582868 OR Email@:josephmwabaj37@gmail.com</p>
+
+    <label for="about-feedback">Leave your feedback:</label>
+    <textarea id="about-feedback"></textarea>
+    <div class="btn-group">
+        <button onclick="submitAboutFeedback()">Submit Feedback</button>
+        <button onclick="clearAboutFeedback()">Clear</button>
+    </div>
+    <button onclick="showPage('')">Back to Dashboard</button>
+</div>
+
+<div id="request-washing" class="page">
+    <h2>What would you love us to wash?</h2>
+    <p style="display: inline-block;padding: 10px 20px;border: none;border-radius: 20px;background-color: darkcyan;color:#fff;cursor: pointer;text-align: center;">please pick your choice<p>
+    <form id="washing-form" onsubmit="return false;">
+        <label for="user-name-wash">Your Name:</label>
+        <input type="text" id="user-name-wash" name="user-name-wash" required>
+
+        <label for="blanket-number">Number of Blankets:</label>
+        <input type="number" id="blanket-number" name="blanket-number" min="0" value="0">
+
+        <label for="bedsheets-number">Number of Bedsheets:</label>
+        <input type="number" id="bedsheets-number" name="bedsheets-number" min="0" value="0">
+
+        <label for="pillow-covers-number">Number of Pillow Covers:</label>
+        <input type="number" id="pillow-covers-number" name="pillow-covers-number" min="0" value="0">
+
+        <label for="smart-shirts-number">Number of Smart-shirts:</label>
+        <input type="number" id="smart-shirts-number" name="smart-shirts-number" min="0" value="0">
+
+        <label for="trousers-number">Number of Trousers:</label>
+        <input type="number" id="trousers-number" name="trousers-number" min="0" value="0">
+
+        <label for="shoes-number">Number of Shoes:</label>
+        <input type="number" id="shoes-number" name="shoes-number" min="0" value="0">
+
+        <label for="room-number">Room Number:</label>
+        <input type="text" id="room-number" name="room-number" required>
+
+        <label for="hostel">Hostel:</label>
+        <input type="text" id="hostel" name="hostel" required>
+
+        <label for="collection-time">Time for collection:</label>
+        <input type="time" id="collection-time" name="collection-time" required>
+
+        <label for="collection-day-wash">Day of collection:</label>
+        <input type="date" id="collection-day-wash" name="collection-day-wash" required>
+
+        <label for="additional-notes-wash">Additional notes:</label>
+        <textarea id="additional-notes-wash" name="additional-notes-wash"></textarea>
+
+        <div id="washing-price-display" class="price-display" style="display:none;"></div>
+
+        <div class="btn-group">
+            <button type="button" onclick="submitWashingRequest()">Submit</button>
+            <button type="button" onclick="cancelRequest()">Cancel</button>
+        </div>
+    </form>
+    <button onclick="showPage('')">Back to Dashboard</button>
+</div>
+
+<div id="request-ironing" class="page">
+    <h2>Request For Ironing</h2>
+    <form id="ironing-form" onsubmit="return false;">
+        <label for="user-name-iron">Your Name:</label>
+        <input type="text" id="user-name-iron" name="user-name-iron" required>
+
+        <label for="jacket-number">Number of Jackets:</label>
+        <input type="number" id="jacket-number" name="jacket-number" min="0" value="0">
+
+        <label for="smart-shirt-iron-number">Number of Smart-shirts:</label>
+        <input type="number" id="smart-shirt-iron-number" name="smart-shirt-iron-number" min="0" value="0">
+
+        <label for="trousers-iron-number">Number of Trousers:</label>
+        <input type="number" id="trousers-iron-number" name="trousers-iron-number" min="0" value="0">
+
+        <label for="other-iron-number">Number of Other Items:</label>
+        <input type="number" id="other-iron-number" name="other-iron-number" min="0" value="0">
+
+        <label for="room-number-iron">Room Number:</label>
+        <input type="text" id="room-number-iron" name="room-number-iron" required>
+
+        <label for="hostel-iron">Hostel:</label>
+        <input type="text" id="hostel-iron" name="hostel-iron" required>
+
+        <label for="collection-time-iron">Time for collection:</label>
+        <input type="time" id="collection-time-iron" name="collection-time-iron" required>
+
+        <label for="collection-day-iron">Day of collection:</label>
+        <input type="date" id="collection-day-iron" name="collection-day-iron" required>
+
+        <label for="notes-iron">Additional notes:</label>
+        <textarea id="notes-iron" name="notes-iron"></textarea>
+
+        <div id="ironing-price-display" class="price-display" style="display:none;"></div>
+
+        <div class="btn-group">
+            <button type="button" onclick="submitIroningRequest()">Submit</button>
+            <button type="button" onclick="cancelRequest()">Cancel</button>
+        </div>
+    </form>
+    <button onclick="showPage('')">Back to Dashboard</button>
+</div>
+
+<div id="chat-with-us" class="page">
+    <h2>Chat with us</h2>
+    <label for="chat-message">Type your message:</label>
+    <textarea id="chat-message"></textarea>
+    <div class="btn-group">
+        <button onclick="submitChatMessage()">Send</button>
+        <button onclick="cancelRequest()">Cancel</button>
+        <button onclick="viewMyFeedback()">View My Feedback</button>
+    </div>
+    <div id="private-feedback" style="margin-top:20px; background:#e0ffe0; padding:10px; border-radius:8px; display:none; max-height:200px; overflow-y:auto;"></div>
+    <button onclick="showPage('')">Back to Dashboard</button>
+</div>
+
+<script>
+    // --- Pricing Configuration (Adjust these values as needed) ---
+    const WASHING_PRICES = {
+        blanket: 15,    // ZMW per blanket
+        bedsheet: 10,   // ZMW per bedsheet
+        pillow_cover: 5, // ZMW per pillow cover
+        smart_shirt: 8, // ZMW per smart shirt
+        trousers: 12,   // ZMW per pair of trousers
+        shoes: 20       // ZMW per pair of shoes
+    };
+    const IRONING_PRICES = {
+        jacket: 10,     // ZMW per jacket
+        smart_shirt: 7, // ZMW per smart shirt
+        trousers: 8,    // ZMW per pair of trousers
+        other: 5        // ZMW per other item
+    };
+
+    // Show page and hide others
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        if(pageId) document.getElementById(pageId).classList.add('active');
+        // Hide price displays when switching pages
+        document.getElementById('washing-price-display').style.display = 'none';
+        document.getElementById('ironing-price-display').style.display = 'none';
+        // Hide private feedback when switching pages
+        document.getElementById('private-feedback').style.display = 'none';
+    }
+
+    // About feedback
+    function submitAboutFeedback() {
+        const fb = document.getElementById('about-feedback').value.trim();
+        if(!fb) return alert('Please enter feedback.');
+        let data = JSON.parse(localStorage.getItem('about_feedback')) || [];
+        data.push({ feedback: fb, timestamp: new Date().toISOString(), response: '' });
+        localStorage.setItem('about_feedback', JSON.stringify(data));
+        alert('Thank you for your feedback!');
+        document.getElementById('about-feedback').value = '';
+    }
+    function clearAboutFeedback() {
+        document.getElementById('about-feedback').value = '';
+    }
+
+    // Washing request
+    function submitWashingRequest() {
+        const userName = document.getElementById('user-name-wash').value.trim();
+        const blankets = parseInt(document.getElementById('blanket-number').value) || 0;
+        const bedsheets = parseInt(document.getElementById('bedsheets-number').value) || 0;
+        const pillowCovers = parseInt(document.getElementById('pillow-covers-number').value) || 0;
+        const smartShirts = parseInt(document.getElementById('smart-shirts-number').value) || 0;
+        const trousers = parseInt(document.getElementById('trousers-number').value) || 0;
+        const shoes = parseInt(document.getElementById('shoes-number').value) || 0;
+        const room = document.getElementById('room-number').value.trim();
+        const hostel = document.getElementById('hostel').value.trim();
+        const time = document.getElementById('collection-time').value;
+        const day = document.getElementById('collection-day-wash').value;
+        const additionalNotes = document.getElementById('additional-notes-wash').value.trim();
+
+        if (!userName || !room || !hostel || !time || !day) {
+            return alert('Please fill in all required fields (Name, Room, Hostel, Time, Day).');
+        }
+
+        const totalItems = blankets + bedsheets + pillowCovers + smartShirts + trousers + shoes;
+        if (totalItems === 0) {
+            return alert('Please enter at least one item to wash.');
+        }
+
+        // Calculate total price for washing
+        const totalPrice =
+            (blankets * WASHING_PRICES.blanket) +
+            (bedsheets * WASHING_PRICES.bedsheet) +
+            (pillowCovers * WASHING_PRICES.pillow_cover) +
+            (smartShirts * WASHING_PRICES.smart_shirt) +
+            (trousers * WASHING_PRICES.trousers) +
+            (shoes * WASHING_PRICES.shoes);
+
+
+        let data = JSON.parse(localStorage.getItem('washing_requests')) || [];
+        data.push({
+            userName,
+            blankets,
+            bedsheets,
+            pillowCovers,
+            smartShirts,
+            trousers,
+            shoes,
+            room,
+            hostel,
+            time,
+            day,
+            additionalNotes,
+            price: totalPrice,
+            timestamp: new Date().toISOString(),
+            response: ''
+        });
+        localStorage.setItem('washing_requests', JSON.stringify(data));
+
+        const priceDisplay = document.getElementById('washing-price-display');
+        priceDisplay.innerHTML = `Total Washing Price: **ZMW ${totalPrice.toFixed(2)}**`;
+        priceDisplay.style.display = 'block';
+
+        alert(`Washing request submitted successfully!\nTotal Price: ZMW ${totalPrice.toFixed(2)}`);
+        document.getElementById('washing-form').reset();
+    }
+
+    // Ironing request
+    function submitIroningRequest() {
+        const userName = document.getElementById('user-name-iron').value.trim();
+        const jackets = parseInt(document.getElementById('jacket-number').value) || 0;
+        const smartShirtsIron = parseInt(document.getElementById('smart-shirt-iron-number').value) || 0;
+        const trousersIron = parseInt(document.getElementById('trousers-iron-number').value) || 0;
+        const otherItems = parseInt(document.getElementById('other-iron-number').value) || 0;
+        const room = document.getElementById('room-number-iron').value.trim();
+        const hostel = document.getElementById('hostel-iron').value.trim();
+        const time = document.getElementById('collection-time-iron').value;
+        const day = document.getElementById('collection-day-iron').value;
+        const notes = document.getElementById('notes-iron').value.trim();
+
+        if (!userName || !room || !hostel || !time || !day) {
+            return alert('Please fill in all required fields (Name, Room, Hostel, Time, Day).');
+        }
+
+        const totalIroningItems = jackets + smartShirtsIron + trousersIron + otherItems;
+        if (totalIroningItems === 0) {
+            return alert('Please enter at least one item to iron.');
+        }
+
+        // Calculate total price for ironing
+        const totalPrice =
+            (jackets * IRONING_PRICES.jacket) +
+            (smartShirtsIron * IRONING_PRICES.smart_shirt) +
+            (trousersIron * IRONING_PRICES.trousers) +
+            (otherItems * IRONING_PRICES.other);
+
+        let data = JSON.parse(localStorage.getItem('ironing_requests')) || [];
+        data.push({
+            userName,
+            jackets,
+            smartShirtsIron,
+            trousersIron,
+            otherItems,
+            room,
+            hostel,
+            time,
+            day,
+            notes,
+            price: totalPrice,
+            timestamp: new Date().toISOString(),
+            response: ''
+        });
+        localStorage.setItem('ironing_requests', JSON.stringify(data));
+
+        const priceDisplay = document.getElementById('ironing-price-display');
+        priceDisplay.innerHTML = `Total Ironing Price: **ZMW ${totalPrice.toFixed(2)}**`;
+        priceDisplay.style.display = 'block';
+
+        alert(`Ironing request submitted successfully!\nTotal Price: ZMW ${totalPrice.toFixed(2)}`);
+        document.getElementById('ironing-form').reset();
+    }
+
+    // Chat message
+    function submitChatMessage() {
+        const msg = document.getElementById('chat-message').value.trim();
+        if(!msg) return alert('Please enter a message.');
+
+        let data = JSON.parse(localStorage.getItem('chat_messages')) || [];
+        data.push({ message: msg, timestamp: new Date().toISOString(), response: '' });
+        localStorage.setItem('chat_messages', JSON.stringify(data));
+        alert('Message sent!');
+        document.getElementById('chat-message').value = '';
+        showPage('');
+    }
+
+    // View feedback related to user messages (responses only)
+    function viewMyFeedback() {
+        const aboutUs = JSON.parse(localStorage.getItem('about_feedback')) || [];
+        const washing = JSON.parse(localStorage.getItem('washing_requests')) || [];
+        const ironing = JSON.parse(localStorage.getItem('ironing_requests')) || [];
+        const chats = JSON.parse(localStorage.getItem('chat_messages')) || [];
+        let feedbackHTML = '<h3>Your Responses</h3>';
+
+        const allUserInteractions = [
+            ...aboutUs.map(item => ({ type: 'About Us Feedback', data: item, originalContent: item.feedback })),
+            ...washing.map(item => ({ type: 'Washing Request', data: item, originalContent: `Blankets: ${item.blankets}, Shoes: ${item.shoes}, Room: ${escapeHtml(item.room)}...` })),
+            ...ironing.map(item => ({ type: 'Ironing Request', data: item, originalContent: `Jackets: ${item.jackets}, Smart-shirts: ${item.smartShirtsIron}, Trousers: ${item.trousersIron}, Other: ${item.otherItems}, Room: ${escapeHtml(item.room)}...` })), // Updated for new ironing items
+            ...chats.map(item => ({ type: 'Chat Message', data: item, originalContent: item.message }))
+        ];
+
+        // Sort interactions by timestamp (most recent first) for better user experience
+        allUserInteractions.sort((a, b) => new Date(b.data.timestamp) - new Date(a.data.timestamp));
+
+        const hasResponses = allUserInteractions.some(item => item.data.response && item.data.response.trim().length > 0);
+
+        if(!hasResponses) {
+            feedbackHTML += '<p>No responses yet.</p>';
+        } else {
+            allUserInteractions.forEach((item, index) => {
+                if (item.data.response && item.data.response.trim().length > 0) {
+                    feedbackHTML += `<p><strong>${item.type}</strong> <small>(${new Date(item.data.timestamp).toLocaleString()})</small>:</p>`;
+                    feedbackHTML += `<p><em>Your input:</em> ${escapeHtml(item.originalContent)}</p>`;
+                    feedbackHTML += `<p><strong>Admin Response:</strong> ${escapeHtml(item.data.response)}</p><hr>`;
+                }
+            });
+        }
+
+        const feedbackDiv = document.getElementById('private-feedback');
+        feedbackDiv.innerHTML = feedbackHTML;
+        feedbackDiv.style.display = 'block';
+    }
+
+    // Cancel button: clear all inputs and go back to dashboard
+    function cancelRequest() {
+        document.querySelectorAll('form').forEach(f => f.reset());
+        document.querySelectorAll('textarea').forEach(t => t.value = '');
+        document.getElementById('private-feedback').style.display = 'none';
+        document.getElementById('washing-price-display').style.display = 'none';
+        document.getElementById('ironing-price-display').style.display = 'none';
+        showPage('');
+    }
+
+    // Escape HTML for display
+    function escapeHtml(text) {
+        if(!text) return '';
+        return text.replace(/[&<>"']/g, function(m) {
+            return ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[m];
+        });
+    }
+
+    // Show dashboard on load
+    showPage('');
+</script>
+
+</body>
+</html>

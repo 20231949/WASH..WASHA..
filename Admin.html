@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>WASHA..WASHA..</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; padding: 20px;
+            background-image: url(kim.jpg);
+            background-size: cover;
+            color: royalblue;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .item strong {
+            display: inline-block;
+            width: 130px;
+        }
+        .response-input {
+            margin-top: 8px;
+            width: 100%;
+            padding: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: darkcyan;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-right: 5px;
+        }
+        .btn:hover {
+            background: #007777;
+        }
+        #logout-btn {
+            display: block;
+            width: 120px;
+            margin: 20px auto;
+            background: tomato;
+            transition: background-color 0.3s ease;
+        }
+        #logout-btn:hover {
+            background: #cc3300;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #cc0000;
+        }
+        .delete-btn:hover {
+            background: #ff3333;
+        }
+        .price-info {
+            font-weight: bold;
+            color: green;
+            margin-top: 5px;
+        }
+        .timestamp-info {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color:ghostwhite;">Admin-WASHA..WASHA..</h1>
+
+    <div class="section" id="about-feedback-section">
+        <h2>About Us Feedback</h2>
+        <div id="about-feedback-list">
+            </div>
+    </div>
+
+    <div class="section" id="washing-requests-section">
+        <h2>Washing Requests</h2>
+        <div id="washing-requests-list"></div>
+    </div>
+
+    <div class="section" id="ironing-requests-section">
+        <h2>Ironing Requests</h2>
+        <div id="ironing-requests-list"></div>
+    </div>
+
+    <div class="section" id="chat-messages-section">
+        <h2>Chat Messages</h2>
+        <div id="chat-messages-list"></div>
+    </div>
+
+    <button id="logout-btn" onclick="logout()">Logout</button>
+
+    <script>
+        function loadData() {
+            loadAboutFeedback();
+            loadWashingRequests();
+            loadIroningRequests();
+            loadChatMessages();
+        }
+
+        function loadAboutFeedback() {
+            const feedbacks = JSON.parse(localStorage.getItem('about_feedback')) || [];
+            const container = document.getElementById('about-feedback-list');
+            container.innerHTML = '';
+            if(feedbacks.length === 0) {
+                container.innerHTML = '<p>No feedback yet.</p>';
+                return;
+            }
+            feedbacks.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.classList.add('item');
+                div.innerHTML = `
+                    <p><strong>Feedback #${index + 1}:</strong> ${escapeHtml(item.feedback)}</p>
+                    <p class="timestamp-info">Submitted: ${new Date(item.timestamp).toLocaleString()}</p>
+                    <textarea class="response-input" placeholder="Write a response...">${item.response || ''}</textarea>
+                    <button class="btn" onclick="saveResponse('about_feedback', ${index}, this.previousElementSibling.value)">Save Response</button>
+                    <button class="btn delete-btn" onclick="deleteItem('about_feedback', ${index})">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadWashingRequests() {
+            const requests = JSON.parse(localStorage.getItem('washing_requests')) || [];
+            const container = document.getElementById('washing-requests-list');
+            container.innerHTML = '';
+            if(requests.length === 0) {
+                container.innerHTML = '<p>No washing requests yet.</p>';
+                return;
+            }
+            requests.forEach((req, index) => {
+                const div = document.createElement('div');
+                div.classList.add('item');
+                div.innerHTML = `
+                    <p><strong>Request #${index + 1}</strong></p>
+                    <p><strong>User Name:</strong> ${escapeHtml(req.userName || 'N/A')}</p>
+                    <p><strong>Blankets:</strong> ${req.blankets}</p>
+                    <p><strong>Bedsheets:</strong> ${req.bedsheets || 0}</p>
+                    <p><strong>Pillow Covers:</strong> ${req.pillowCovers || 0}</p>
+                    <p><strong>Smart-shirts:</strong> ${req.smartShirts || 0}</p>
+                    <p><strong>Trousers:</strong> ${req.trousers || 0}</p>
+                    <p><strong>Shoes:</strong> ${req.shoes}</p>
+                    <p><strong>Room:</strong> ${escapeHtml(req.room)}</p>
+                    <p><strong>Hostel:</strong> ${escapeHtml(req.hostel)}</p>
+                    <p><strong>Collection Time:</strong> ${req.time}</p>
+                    <p><strong>Collection Day:</strong> ${req.day || 'N/A'}</p>
+                    <p><strong>Additional Notes:</strong> ${escapeHtml(req.additionalNotes || 'None')}</p>
+                    <p class="price-info"><strong>Calculated Price:</strong> ZMW ${req.price ? req.price.toFixed(2) : 'N/A'}</p>
+                    <p class="timestamp-info">Submitted: ${new Date(req.timestamp).toLocaleString()}</p>
+                    <textarea class="response-input" placeholder="Write a response...">${req.response || ''}</textarea>
+                    <button class="btn" onclick="saveResponse('washing_requests', ${index}, this.previousElementSibling.value)">Save Response</button>
+                    <button class="btn delete-btn" onclick="deleteItem('washing_requests', ${index})">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadIroningRequests() {
+            const requests = JSON.parse(localStorage.getItem('ironing_requests')) || [];
+            const container = document.getElementById('ironing-requests-list');
+            container.innerHTML = '';
+            if(requests.length === 0) {
+                container.innerHTML = '<p>No ironing requests yet.</p>';
+                return;
+            }
+            requests.forEach((req, index) => {
+                const div = document.createElement('div');
+                div.classList.add('item');
+                // Ensure default values for new fields if old data exists
+                const jackets = req.jackets !== undefined ? req.jackets : 0;
+                const smartShirtsIron = req.smartShirtsIron !== undefined ? req.smartShirtsIron : 0;
+                const trousersIron = req.trousersIron !== undefined ? req.trousersIron : 0;
+                const otherItems = req.otherItems !== undefined ? req.otherItems : 0;
+
+                div.innerHTML = `
+                    <p><strong>Request #${index + 1}</strong></p>
+                    <p><strong>User Name:</strong> ${escapeHtml(req.userName || 'N/A')}</p>
+                    <p><strong>Jackets:</strong> ${jackets}</p>
+                    <p><strong>Smart-shirts:</strong> ${smartShirtsIron}</p>
+                    <p><strong>Trousers:</strong> ${trousersIron}</p>
+                    <p><strong>Other Items:</strong> ${otherItems}</p>
+                    <p><strong>Room:</strong> ${escapeHtml(req.room)}</p>
+                    <p><strong>Hostel:</strong> ${escapeHtml(req.hostel)}</p>
+                    <p><strong>Collection Time:</strong> ${req.time}</p>
+                    <p><strong>Collection Day:</strong> ${req.day || 'N/A'}</p>
+                    <p><strong>Notes:</strong> ${escapeHtml(req.notes)}</p>
+                    <p class="price-info"><strong>Calculated Price:</strong> ZMW ${req.price ? req.price.toFixed(2) : 'N/A'}</p>
+                    <p class="timestamp-info">Submitted: ${new Date(req.timestamp).toLocaleString()}</p>
+                    <textarea class="response-input" placeholder="Write a response...">${req.response || ''}</textarea>
+                    <button class="btn" onclick="saveResponse('ironing_requests', ${index}, this.previousElementSibling.value)">Save Response</button>
+                    <button class="btn delete-btn" onclick="deleteItem('ironing_requests', ${index})">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadChatMessages() {
+            const messages = JSON.parse(localStorage.getItem('chat_messages')) || [];
+            const container = document.getElementById('chat-messages-list');
+            container.innerHTML = '';
+            if(messages.length === 0) {
+                container.innerHTML = '<p>No chat messages yet.</p>';
+                return;
+            }
+            messages.forEach((msg, index) => {
+                const div = document.createElement('div');
+                div.classList.add('item');
+                div.innerHTML = `
+                    <p><strong>Message #${index + 1}:</strong> ${escapeHtml(msg.message)}</p>
+                    <p class="timestamp-info">Sent: ${new Date(msg.timestamp).toLocaleString()}</p>
+                    <textarea class="response-input" placeholder="Write a response...">${msg.response || ''}</textarea>
+                    <button class="btn" onclick="saveResponse('chat_messages', ${index}, this.previousElementSibling.value)">Save Response</button>
+                    <button class="btn delete-btn" onclick="deleteItem('chat_messages', ${index})">Delete</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function saveResponse(key, index, responseText) {
+            const data = JSON.parse(localStorage.getItem(key)) || [];
+            if(data[index]) {
+                data[index].response = responseText.trim();
+                localStorage.setItem(key, JSON.stringify(data));
+                alert('Response saved!');
+                // Reload the specific section to update the view
+                if (key === 'about_feedback') loadAboutFeedback();
+                else if (key === 'washing_requests') loadWashingRequests();
+                else if (key === 'ironing_requests') loadIroningRequests();
+                else if (key === 'chat_messages') loadChatMessages();
+            }
+        }
+
+        function deleteItem(key, index) {
+            let data = JSON.parse(localStorage.getItem(key)) || [];
+            if(index >= 0 && index < data.length) {
+                if(confirm('Are you sure you want to delete this item?')) {
+                    data.splice(index, 1);
+                    localStorage.setItem(key, JSON.stringify(data));
+                    loadData(); // Reload all data after deletion
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            if(!text) return '';
+            return text.replace(/[&<>"']/g, function(m) {
+                return ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[m];
+            });
+        }
+
+        function logout() {
+            if(confirm('Are you sure you want to logout?')) {
+                window.location.href = 'admin-login.html';
+            }
+        }
+
+        window.onload = loadData;
+    </script>
+
+</body>
+</html>

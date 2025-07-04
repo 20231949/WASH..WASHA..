@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login Form</title>
+  <style>
+    body {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      background-color:#142020;
+      background-position: center;
+      background-size: cover;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 300px;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      background-color: wheat;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 15px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #3e8e41;
+    }
+    .error {
+      color: red;
+      margin-bottom: 15px;
+    }
+    .forget-password {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .forget-password a {
+      text-decoration: none;
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="font-size: 20px;">Admin Login</h1>
+    <p style="font-size: 14px;">Enter username and password to login.</p>
+    <div id="error" class="error"></div>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" autocomplete="off" required>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" autocomplete="off" required>
+      <button type="submit">Login</button>
+      <div class="forget-password">
+        <a href="#">Forget Password?</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Simple local check: username=joseph@, password=20231949
+      if(username === 'joseph@' && password === '20231949') {
+        document.getElementById('error').textContent = '';
+        window.location.href = 'admin.html';
+      } 
+        else {
+        document.getElementById('error').textContent = 'Invalid username or password.';
+      }
+    });
+  </script>
+</body>
+</html>
